@@ -1,15 +1,17 @@
+#!/usr/bin/env groovy
 package com.example
 
-class Docker implements Serializable {
+class Docker implements  Serializable
+{
     def script
 
-    Docker(script) {
+    Docker(script){
         this.script = script
     }
 
-    def buildDockerImage(String imageName) {
-        script.echo "Start building app"
-        script.sh "docker build -t $imageName ."
+    def buildDockerImage(String newImageTag) {
+        script.echo "Building Docker image: ${newImageTag}"
+        script.sh "docker build -t ${newImageTag} ."
     }
 
     def dockerLogin() {
@@ -22,8 +24,22 @@ class Docker implements Serializable {
         }
     }
 
-    def dockerPush(String imageName) {
-        script.sh "docker push $imageName"
-        script.echo 'Push successful'
+    def dockerPush(String newImageTag) {
+        script.echo "Pushing Docker image: ${newImageTag}"
+        script.sh "docker push ${newImageTag}"
+    }
+
+    def finalGitPush() {
+            script.withCredentials([script.usernamePassword(credentialsId: 'Ved-git', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+            // git config here for the first time run
+            script.sh 'git config --global user.email "jenkins@example.com"'
+            script.sh 'git config --global user.name "jenkins"'
+
+            script.sh """ git remote set-url origin https://\${USER}:\${PASS}@github.com/Ved3264/VKart.ecom.git """
+            script.sh 'git add .'
+            script.sh 'git commit -m "ci: version bump"'
+            script.sh 'git push origin HEAD:jenkins'
+        }
+
     }
 }
