@@ -31,15 +31,14 @@ class Docker implements  Serializable
 
     def finalGitPush() {
             script.withCredentials([script.usernamePassword(credentialsId: 'Ved-git', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-            // git config here for the first time run
-            script.sh 'git config --global user.email "jenkins@example.com"'
-            script.sh 'git config --global user.name "jenkins"'
+                // Git config here for the first time run
+                script.sh 'git config --global user.email "jenkins@example.com"'
+                script.sh 'git config --global user.name "jenkins"'
 
-            script.sh """ git remote set-url origin https://\${USER}:\${PASS}@github.com/Ved3264/VKart.ecom.git """
-            script.sh 'git add .'
-            script.sh 'git commit -m "ci: version bump"'
-            script.sh 'git push origin HEAD:jenkins'
-        }
-
+                script.sh """ git remote set-url origin https://\${USER}:\${PASS}@github.com/Ved3264/VKart.ecom.git """
+                script.sh 'git add .'
+                script.sh 'git commit -m "ci: version bump"'
+                script.sh 'git push origin HEAD:jenkins'
+            }
     }
 }
