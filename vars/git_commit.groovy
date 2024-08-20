@@ -3,8 +3,8 @@ def call()
 {
     withCredentials([usernamePassword(credentialsId: 'vedgit', passwordVariable: 'TOKEN', usernameVariable: 'USER')]) {
         // git config here for the first time run
-        sh 'git config --global user.email "test@gmail.com"'
-        sh 'git config --global user.name "test"'
+        sh 'git config --global user.email "devlopment@gmail.com"'
+        sh 'git config --global user.name "devlopement"'
 
         // Using the credentials securely
         sh "git remote set-url origin https://${USER}:${TOKEN}@github.com/Ved3264/VKart.ecom.git"
